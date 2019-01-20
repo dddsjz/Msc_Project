@@ -48,22 +48,29 @@ class DataProcess(object):
             A list contain PPG in 0, 1 position and ECG in 2, 3. both ecg and ppg are ndarray
         """
         tmp = []  # return list
-        tmp1 = []  # PPG list
-        tmp2 = []  # ECG list
-
+        tmp1 = []  # PPG train list
+        tmp2 = []  # PPG test list
+        tmp3 = []  # ECG train list
+        tmp4 = []  # ECG test list
         split = int(60*self.frequence*self.minutes/2/dim)
 
         for i in range(dim):
             tmp1.append(data.iloc[i*split:(i+1)*split, 0])  # PPG train set
-            tmp2.append(data.iloc[i*split:(i+1)*split, 1])  # ECG train set
+            tmp2.append(data.iloc[(i+dim)*split:(i+dim + 1)*split, 0])  # PPG test set
+            tmp3.append(data.iloc[i*split:(i+1)*split, 1])  # ECG train set
+            tmp4.append(data.iloc[(i+dim)*split:(i+dim + 1)*split, 1])  # ECG test set
 
         ppg = np.asarray(tmp1)
-        ecg = np.asarray(tmp2)
+        ppg_test = np.asarray(tmp2)
+        ecg = np.asarray(tmp3)
+        ecg_test = np.asarray(tmp4)
         # print(ppg.T.shape)
         # print(ecg.shape)
 
         tmp.append(ppg.T) # x * dim ndarray
+        tmp.append(ppg_test.T)
         tmp.append(ecg.T)
+        tmp.append(ecg_test.T)
 
         # tmp.append(data.iloc[:split, 0])  # PPG train set
         # tmp.append(data.iloc[:split, 1])  # ECG train set
@@ -195,10 +202,7 @@ class DataProcess(object):
         """
 
         data1 = data
-        tmp = self.split_data(data1, dim = dim)
-        ppg = tmp[0]
-        ecg = tmp[1]
-        
+        tmp = self.split_data(data1, dim = dim)    
 
         return tmp
 
