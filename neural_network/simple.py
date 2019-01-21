@@ -13,15 +13,15 @@ import dataprocess
 
 dp = dataprocess.DataProcess('bidmc_01_Signals.csv')
 data = dp.split_data(dp.data, dim = 10)
-print(data[0].shape)
+print(data[0])
 
 # Generate dummy data
-# x_train = np.random.random((1000, 20))
-# y_train = np.random.randint(2, size=(1000, 1))
-# x_test = np.random.random((100, 20))
-# y_test = np.random.randint(2, size=(100, 1))
+x_train = np.random.random((1000, 10))
+y_train = np.random.randint(2, size=(1000, 1))
+x_test = np.random.random((100, 10))
+y_test = np.random.randint(2, size=(100, 1))
 
-# print(x_train.shape)
+# print(y_train.shape)
 
 model = keras.models.Sequential()
 model.add(keras.layers.Dense(64, input_dim=10, activation='relu'))
@@ -34,7 +34,16 @@ model.compile(loss='binary_crossentropy',
               optimizer='rmsprop',
               metrics=['accuracy'])
 
-model.fit(data[0], data[0],
+""" ECG data
+model.fit(data[0], data[0][:, 0],
           epochs=10,
-          batch_size=128)
-score = model.evaluate(data[0], data[0], batch_size=128)
+          batch_size=125)
+
+score = model.evaluate(data[0], data[0][:, 0], batch_size=125)
+"""
+
+model.fit(x_train, y_train,
+          epochs=10,
+          batch_size=125)
+
+score = model.evaluate(x_test, y_test, batch_size=125)
