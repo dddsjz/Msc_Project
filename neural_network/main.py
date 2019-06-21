@@ -37,7 +37,7 @@ class DataProcess(object):
     """
 
 
-    def __init__(self, filename, frequence = 100, minutes = 5/60, resample = 0, resample_factor = 5):
+    def __init__(self, filename, frequence = 100, minutes = 100/60, resample = 0, resample_factor = 5):
         current = os.getcwd()
         path = Path(current + '/data')
         file = path / filename
@@ -277,7 +277,9 @@ class Network:
     def baseline_model(self):
         # create model
         model = Sequential()
-        model.add(Dense(units=self.nerual_number, input_dim=self.input_dim, kernel_initializer='normal', activation='relu'))
+        print(self.nerual_number)
+        print(self.input_dim)
+        model.add(Dense(self.nerual_number, input_dim=self.input_dim, kernel_initializer='normal', activation='relu'))
         # model.add(Dense(units=1, kernel_initializer='normal'))
 
         # Compile model
@@ -305,7 +307,7 @@ if __name__ == '__main__':
 
     # map directly
     
-    tmp = dp.process_data_origin(data, 5)
+    tmp = dp.process_data_origin(data, 100)
     
     ppg = tmp[0]
     ppg_train = tmp[2]
@@ -314,12 +316,14 @@ if __name__ == '__main__':
     
     # print(ppg)
     # plt.plot(ecg)
-    plt.plot(ppg)
-    plt.show()
+    # plt.plot(ppg)
+    # plt.show()
     # plt.scatter(dp.ppg, ecg)
     # plt.show()
 
-    nt = Network(ppg_train, ecg_train, 1, 5)
+    # print(ppg)
+
+    nt = Network(ppg_train, ecg_train, 100, 100)
     m = nt.baseline_model()
     for step in range(301):
         cost = m.train_on_batch(ecg_train, ecg_train)
@@ -331,12 +335,13 @@ if __name__ == '__main__':
     print('Weights=', w, '\nbiases=', b)
 
 
-    Y_pred = m.predict(ppg[:200])
+    Y_pred = m.predict(ppg)
     # plt.scatter(ppg_train, ecg_train)
     # plt.plot(ppg_train, Y_pred)
     # plt.show()
-    plt.plot(ecg)
-    plt.plot(ppg)
+    # plt.plot(ecg)
+    # plt.plot(ppg)
+    Y_pred = np.mean(Y_pred, axis=1)
     plt.plot(Y_pred)
     plt.show()
 
