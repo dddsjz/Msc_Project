@@ -47,7 +47,7 @@ class DataProcess(object):
         Returns:
             A list contain PPG in 0, 1 position and ECG in 2, 3. both ecg and ppg are ndarray
         """
-        tmp = []  # return list
+        tmp0 = []  # return list
         tmp1 = []  # PPG train list
         tmp2 = []  # PPG test list
         tmp3 = []  # ECG train list
@@ -67,19 +67,19 @@ class DataProcess(object):
         # print(ppg.T.shape)
         # print(ecg.shape)
 
-        tmp.append(ppg.T) # x * dim ndarray
-        tmp.append(ppg_test.T)
-        tmp.append(ecg.T)
-        tmp.append(ecg_test.T)
+        tmp0.append(ppg.T) # x * dim ndarray
+        tmp0.append(ppg_test.T)
+        tmp0.append(ecg.T)
+        tmp0.append(ecg_test.T)
 
-        # tmp.append(data.iloc[:split, 0])  # PPG train set
-        # tmp.append(data.iloc[:split, 1])  # ECG train set
-        # tmp.append(data.iloc[split:, 0])  # PPG test set
-        # tmp.append(data.iloc[split:, 1])  # ECG test set
+        # tmp0.append(data.iloc[:split, 0])  # PPG train set
+        # tmp0.append(data.iloc[:split, 1])  # ECG train set
+        # tmp0.append(data.iloc[split:, 0])  # PPG test set
+        # tmp0.append(data.iloc[split:, 1])  # ECG test set
 
         # print(data.iloc[:split, 0].shape)
         # print(data.iloc[split:, 0].shape)
-        return tmp 
+        return tmp0
 
     def bandpass_filter(self, signal, order=5, low_feq=0.5, high_feq=40, signal_feq=125):
         """ A bandpass filter

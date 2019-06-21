@@ -104,6 +104,7 @@ class FullConnect(object):
             tmp = optimizer + '(' + (str)(optpara) + ')'
             print(tmp)
             opt = eval(tmp)
+        print(model.summary())
         self.model.compile(optimizer=opt, loss=loss, metrics=[metrics])
 
     def run(self):
